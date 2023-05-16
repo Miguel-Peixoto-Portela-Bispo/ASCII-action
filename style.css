@@ -2,24 +2,23 @@
     margin: 0;
     padding: 0;
 }
-#main-container{
-    width: fit-content;
+body{
+    display: flex;
+    flex-direction: column;
+}
+#header-container{
+    background-color: white;
     height: fit-content;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    font-family: Arial, Helvetica, sans-serif;
+}
+#main-container{
+    align-self: center;
     font-family: 'Courier New', Courier, monospace;
     border: 1px solid black;
     font-size: 12px;
-    z-index: -1;
-    overflow-y: scroll;
-}
-#secondary-container{
-    background-color: white;
-    width: 100vw;
 }
 #identifier{
+    margin: 0.5rem;
     text-align: center;
 }
 #size-range{
