@@ -6,9 +6,24 @@ class Player extends Entity{
         super(x, y, ' 0 \n/|\\\n/ \\');
         this.game = game;
     }
-    update()
+    update(input)
     {
-        
+        if(input.isKeyActive('ArrowRight')||input.isSwipeActive('swipe right'))
+        {
+            this.x+=0.5;
+        }
+        if(input.isKeyActive('ArrowLeft')||input.isSwipeActive('swipe left'))
+        {
+            this.x-=0.5;
+        }
+        if(this.x<0)
+        {
+            this.x = 0;
+        }
+        if(this.x+3>this.game.width)
+        {
+            this.x = this.game.width-3;
+        }
     }
 }
 export default Player;

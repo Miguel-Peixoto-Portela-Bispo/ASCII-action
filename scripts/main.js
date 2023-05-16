@@ -1,3 +1,4 @@
+import InputHandler from "./inputs.js";
 import Player from "./player.js";
 import TextScreen from "./text-screen.js";
 import { Entity } from "./util.js";
@@ -12,11 +13,12 @@ class Game{
         this.height = h;
         this.fps = 60;
         this.screen = new TextScreen(w, h);
-        this.player = new Player(0, 0, this);
+        this.inputHandler = new InputHandler();
+        this.player = new Player(0, h-3, this);
     }
     update()
     {
-        this.player.update();
+        this.player.update(this.inputHandler);
     }
     render(canvas)
     {
