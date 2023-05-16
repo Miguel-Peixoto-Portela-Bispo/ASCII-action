@@ -35,3 +35,9 @@ function loop()
     setTimeout(loop, 1000/game.fps)
 }
 loop();
+
+const sizeRange = document.getElementById('size-range');
+const mainContainer = document.getElementById('main-container');
+sizeRange.oninput = ()=>{
+    mainContainer.style.fontSize = sizeRange.value+'px';
+}
