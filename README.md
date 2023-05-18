@@ -1,1 +1,1 @@
-# ascii-game
+# ASCII-game
