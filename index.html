@@ -9,11 +9,19 @@
 </head>
 <body>
     <div id="header-container">
-        <div id="identifier">scale:</div>
-        <input type="range" id="size-range" min="4" max="32" value="12">
+        <div id="config">
+            font-size (in pixels):
+            <input type="number" id="font-size" value="12" placeholder="px">
+            color1:
+            <input type="color" id="color1" class="color">
+            color2:
+            <input type="color" id="color2" class="color" value="#FFFFFF">
+            <button id="save-btn">save</button>
+        </div>
+        <button id="config-btn">configurations</button>
     </div>
     <div id="main-container">
-        <div id="game-screen"></div>
+        <pre id="game-screen"></pre>
     </div>
     <script src="scripts/main.js" type="module"></script>
 </body>

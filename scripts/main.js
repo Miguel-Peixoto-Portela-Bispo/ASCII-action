@@ -2,9 +2,9 @@ import InputHandler from "./inputs.js";
 import Player from "./player.js";
 import TextScreen from "./text-screen.js";
 import { Entity } from "./util.js";
-const WIDTH = 64, HEIGHT = 32;
+const WIDTH = 48, HEIGHT = 24;
 const textCanvas = document.getElementById('game-screen');
-textCanvas.style.width = WIDTH+'ch';
+// textCanvas.style.width = WIDTH+'ch';
 class Game{
 
     constructor(w, h)
@@ -36,8 +36,25 @@ function loop()
 }
 loop();
 
-const sizeRange = document.getElementById('size-range');
+const fontSize = document.getElementById('font-size');
 const mainContainer = document.getElementById('main-container');
-sizeRange.oninput = ()=>{
-    mainContainer.style.fontSize = sizeRange.value+'px';
+const color1 = document.getElementById('color1');
+const color2 = document.getElementById('color2');
+const saveBtn = document.getElementById('save-btn');
+const configBtn = document.getElementById('config-btn');
+const config = document.getElementById('config');
+saveBtn.onclick = ()=>{
+    mainContainer.style.fontSize = fontSize.value+'px';
+    document.documentElement.style.setProperty('--color1', color1.value);
+    document.documentElement.style.setProperty('--color2', color2.value)
+}
+configBtn.onclick = ()=>{
+    if(config.style.display === 'none')
+    {
+        config.style.display = 'block';
+    }
+    else
+    {
+        config.style.display = 'none';
+    }
 }

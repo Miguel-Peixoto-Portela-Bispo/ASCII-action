@@ -12,15 +12,16 @@ class TextScreen{
     }
     showIn(canvas)
     {
-        canvas.textContent = '';
+        let str = '';
         for(let y = 0;y<this.height;y++)
         {
             for(let x = 0;x<this.width;x++)
             {
-                canvas.textContent+=this.chars[x+y*this.width];
+                str+=this.chars[x+y*this.width];
             }
-            canvas.textContent+='\n';
+            str+='\n';
         }
+        canvas.innerText = str;
     }
     drawString(str, x, y)
     {
