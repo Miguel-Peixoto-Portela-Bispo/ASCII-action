@@ -7,6 +7,7 @@ class Player extends Entity{
         this.game = game;
         this.lifes= 3;
         this.invincibleTimer = 0;
+        this.score = 0;
         this.canShow = true;
     }
     update()

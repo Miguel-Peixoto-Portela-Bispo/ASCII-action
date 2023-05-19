@@ -1,6 +1,8 @@
+import UI from "./UI.js";
 import Enemy from "./enemy.js";
 import InputHandler from "./inputs.js";
 import Player from "./player.js";
+import Score from "./score.js";
 import TextScreen from "./text-screen.js";
 import { Entity } from "./util.js";
 const WIDTH = 48, HEIGHT = 24;
@@ -15,6 +17,7 @@ class Game{
         this.screen = new TextScreen(w, h);
         this.inputHandler = new InputHandler();
         this.player = new Player(this);
+        this.ui = new UI(this);
         this.entities = [];
         this.entities.push(this.player);
         this.timerToSpawn = 0;
@@ -29,10 +32,17 @@ class Game{
         }
         if(this.timerToSpawn>this.maxTimeToSpawn)
         {
-            this.maxTimeToSpawn = Math.random()*this.fps;
+            this.maxTimeToSpawn = Math.random()*this.fps*4;
             this.timerToSpawn = 0;
-            let x = Math.random()*(this.width-3);
-            this.entities.push(new Enemy(x, -1, this));
+            let x = 0;
+            for(let i = 0;i<3;i++)
+            {
+                x = Math.random()*(this.width-3);
+                this.entities.push(new Enemy(x, -1, this));
+            }
+            x = Math.random()*(this.width-3);
+            this.entities.push(new Score(x, -1, this));
+
         }
         else
         {
@@ -46,6 +56,7 @@ class Game{
         {
             e.render(this.screen);
         }
+        this.ui.render(this.screen);
         this.screen.showIn(canvas);
     }
 }

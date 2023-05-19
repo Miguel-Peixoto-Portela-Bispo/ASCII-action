@@ -6,7 +6,7 @@ class Enemy extends Entity{
     {
         super(x, y, '<->');
         this.game = game;
-        this.speed = Math.random()*0.4+0.1;
+        this.speed = Math.random()*0.2+0.1;
     }
     update()
     {
