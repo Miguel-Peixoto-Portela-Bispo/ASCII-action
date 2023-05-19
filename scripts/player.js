@@ -1,18 +1,21 @@
 import { Entity } from "./util.js";
 
 class Player extends Entity{
-    constructor(x, y, game)
+    constructor(game)
     {
-        super(x, y, ' 0 \n/|\\\n/ \\');
+        super(0, game.height-3, ' 0 \n/|\\\n/ \\');
         this.game = game;
+        this.lifes= 3;
+        this.invincibleTimer = 0;
+        this.canShow = true;
     }
-    update(input)
+    update()
     {
-        if(input.isKeyActive('ArrowRight')||input.isSwipeActive('swipe right'))
+        if(this.game.inputHandler.isKeyActive('ArrowRight')||this.game.inputHandler.isSwipeActive('swipe right'))
         {
             this.x+=0.5;
         }
-        if(input.isKeyActive('ArrowLeft')||input.isSwipeActive('swipe left'))
+        if(this.game.inputHandler.isKeyActive('ArrowLeft')||this.game.inputHandler.isSwipeActive('swipe left'))
         {
             this.x-=0.5;
         }
@@ -23,6 +26,31 @@ class Player extends Entity{
         if(this.x+3>this.game.width)
         {
             this.x = this.game.width-3;
+        }
+        if(this.invincible)
+        {
+            this.invincibleTimer++;
+            if(this.invincibleTimer%2 === 0)
+            {
+                this.canShow = !this.canShow;
+            }
+            if(this.invincibleTimer>this.game.fps*2)
+            {
+                this.invincibleTimer = 0;
+                this.invincible = false;
+            }
+        }
+    }
+    takeDamage()
+    {
+        this.lifes--;
+        this.invincible = true;
+    }
+    render(scr)
+    {
+        if(this.canShow)
+        {
+            super.render(scr);
         }
     }
 }

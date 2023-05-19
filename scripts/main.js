@@ -1,29 +1,51 @@
+import Enemy from "./enemy.js";
 import InputHandler from "./inputs.js";
 import Player from "./player.js";
 import TextScreen from "./text-screen.js";
 import { Entity } from "./util.js";
 const WIDTH = 48, HEIGHT = 24;
 const textCanvas = document.getElementById('game-screen');
-// textCanvas.style.width = WIDTH+'ch';
 class Game{
 
     constructor(w, h)
     {
         this.width = w;
         this.height = h;
-        this.fps = 60;
+        this.fps = 30;
         this.screen = new TextScreen(w, h);
         this.inputHandler = new InputHandler();
-        this.player = new Player(0, h-3, this);
+        this.player = new Player(this);
+        this.entities = [];
+        this.entities.push(this.player);
+        this.timerToSpawn = 0;
+        this.maxTimeToSpawn = this.fps;
     }
     update()
     {
-        this.player.update(this.inputHandler);
+        this.entities = this.entities.filter(e=>!e.markedForDeletion);
+        for(let e of this.entities)
+        {
+            e.update();
+        }
+        if(this.timerToSpawn>this.maxTimeToSpawn)
+        {
+            this.maxTimeToSpawn = Math.random()*this.fps;
+            this.timerToSpawn = 0;
+            let x = Math.random()*(this.width-3);
+            this.entities.push(new Enemy(x, -1, this));
+        }
+        else
+        {
+            this.timerToSpawn++;
+        }
     }
     render(canvas)
     {
         this.screen.clear();
-        this.player.render(this.screen);
+        for(let e of this.entities)
+        {
+            e.render(this.screen);
+        }
         this.screen.showIn(canvas);
     }
 }

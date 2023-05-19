@@ -41,7 +41,7 @@ export class Entity{
         {
             for(let j = 0;j<positions2.length;j++)
             {
-                if(positions[i].x === positions2[j].x&&positions[i].y === positions2[j].y)
+                if(Math.floor(positions[i].x) === Math.floor(positions2[j].x)&&Math.floor(positions[i].y) === Math.floor(positions2[j].y))
                 {
                     return true;
                 }
@@ -51,5 +51,10 @@ export class Entity{
                 }
             }
         }
+    }
+    distanceFrom(e)
+    {
+        let h = Math.hypot(e.x-this.x, e.y-this.y);
+        return h;
     }
 }

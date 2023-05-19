@@ -4,11 +4,11 @@ class TextScreen{
         this.width = w;
         this.height = h;
         this.chars = new Array(this.width*this.height);
-        this.chars.fill('.');
+        this.chars.fill(' ');
     }
     clear()
     {
-        this.chars.fill('.');
+        this.chars.fill(' ');
     }
     showIn(canvas)
     {

@@ -13,7 +13,6 @@ class InputHandler{
             {
                 this.activeKeys.push(e.code);
             }
-            console.log(e.code);
         });
         document.addEventListener('keyup', (e)=>{
             this.activeKeys.splice(this.activeKeys.indexOf(e.code), 1);
