@@ -21,7 +21,7 @@ class TextScreen{
             }
             str+='\n';
         }
-        canvas.innerText = str;
+        canvas.innerText= str;
     }
     drawString(str, x, y)
     {
@@ -30,12 +30,26 @@ class TextScreen{
         {
             for(let xx =0;xx<pieces[yy].length;xx++)
             {
-                let xp = xx+x;
-                let yp = yy+y;
+                let xp = Math.floor(xx+x);
+                let yp = Math.floor(yy+y);
                 if(xp<0||yp<0||xp>=this.width||yp>=this.height)
                     continue;
                 if(pieces[yy].charAt(xx)!== ' ')
                     this.chars[xp+yp*this.width] = pieces[yy].charAt(xx);
+            }
+        }
+    }
+    fillRect(symbol, x, y, w, h)
+    {
+        for(let yy = 0;yy<h;yy++)
+        {
+            for(let xx = 0;xx<w;xx++)
+            {
+                let xp = xx+x;
+                let yp = yy+y;
+                if(xp<0||yp<0||xp>=this.width||yp>=this.height)
+                    continue;
+                this.chars[xp+yp*this.width] = symbol;
             }
         }
     }

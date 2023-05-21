@@ -1,66 +1,80 @@
-import UI from "./UI.js";
-import Enemy from "./enemy.js";
+import { MenuGameState, NormalGameState, OverGameState, PauseGameState } from "./game-states.js";
 import InputHandler from "./inputs.js";
-import Player from "./player.js";
-import Score from "./score.js";
 import TextScreen from "./text-screen.js";
-import { Entity } from "./util.js";
 const WIDTH = 48, HEIGHT = 24;
 const textCanvas = document.getElementById('game-screen');
 class Game{
 
-    constructor(w, h)
+    constructor(w, h, canvas)
     {
         this.width = w;
         this.height = h;
-        this.fps = 30;
+        this.canvas = canvas;
+        this.fps = 24;
         this.screen = new TextScreen(w, h);
         this.inputHandler = new InputHandler();
-        this.player = new Player(this);
-        this.ui = new UI(this);
-        this.entities = [];
-        this.entities.push(this.player);
-        this.timerToSpawn = 0;
-        this.maxTimeToSpawn = this.fps;
+        this.statesIndexes = {MENU: 0, NORMAL: 1, PAUSE: 2, OVER: 3};
+        this.states = [new MenuGameState(this), new NormalGameState(this), new PauseGameState(this), new OverGameState(this)];
+        this.curState = this.states[this.statesIndexes.OVER];
     }
     update()
     {
-        this.entities = this.entities.filter(e=>!e.markedForDeletion);
-        for(let e of this.entities)
-        {
-            e.update();
-        }
-        if(this.timerToSpawn>this.maxTimeToSpawn)
-        {
-            this.maxTimeToSpawn = Math.random()*this.fps*4;
-            this.timerToSpawn = 0;
-            let x = 0;
-            for(let i = 0;i<3;i++)
-            {
-                x = Math.random()*(this.width-3);
-                this.entities.push(new Enemy(x, -1, this));
-            }
-            x = Math.random()*(this.width-3);
-            this.entities.push(new Score(x, -1, this));
-
-        }
-        else
-        {
-            this.timerToSpawn++;
-        }
+        this.curState.update();
     }
-    render(canvas)
+    render()
     {
         this.screen.clear();
-        for(let e of this.entities)
+        this.curState.render(this.screen);
+        this.screen.showIn(this.canvas);
+    }
+    setState(index)
+    {
+        this.curState = this.states[index];
+    }
+    getState(index)
+    {
+        return this.states[index];
+    }
+    resetState(index)
+    {
+        let state = null;
+        if(index === this.statesIndexes.MENU)
         {
-            e.render(this.screen);
+            state = new MenuGameState(this);
         }
-        this.ui.render(this.screen);
-        this.screen.showIn(canvas);
+        else if(index === this.statesIndexes.NORMAL)
+        {
+            state = new NormalGameState(this);
+        }
+        else if(index === this.statesIndexes.PAUSE)
+        {
+            state = new PauseGameState(this);
+        }
+        else if(index === this.statesIndexes.OVER)
+        {
+            state = new OverGameState(this);
+        }
+        this.states[index] = state;
+    }
+    getTouchPosition()
+    {
+        let fontSize = window.getComputedStyle(this.canvas).getPropertyValue('font-size');
+        let div = document.createElement('div');
+        div.style.width = 'min-content';
+        div.style.fontFamily = '\'Courier New\', Courier, monospace';
+        div.style.fontSize = fontSize;
+        div.style.backgroundColor = 'blue';
+        div.innerText = '.';
+        document.body.appendChild(div);
+        let scaleX = div.getBoundingClientRect().width;
+        let x = Math.floor((this.inputHandler.touchX-this.canvas.getBoundingClientRect().x)/scaleX);
+        let scaleY = div.getBoundingClientRect().height;
+        let y = Math.floor((this.inputHandler.touchY-this.canvas.getBoundingClientRect().y)/scaleY);
+        div.remove();
+        return {x: x, y: y};
     }
 }
-const game = new Game(WIDTH, HEIGHT);
+const game = new Game(WIDTH, HEIGHT, textCanvas);
 function loop()
 {
     game.update();
@@ -73,7 +87,7 @@ const fontSize = document.getElementById('font-size');
 const mainContainer = document.getElementById('main-container');
 const color1 = document.getElementById('color1');
 const color2 = document.getElementById('color2');
-const saveBtn = document.getElementById('save-btn');
+const saveBtn = document.getElementById('set-btn');
 const configBtn = document.getElementById('config-btn');
 const config = document.getElementById('config');
 saveBtn.onclick = ()=>{

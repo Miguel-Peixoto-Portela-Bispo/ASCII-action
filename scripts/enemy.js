@@ -10,16 +10,17 @@ class Enemy extends Entity{
     }
     update()
     {
+        let state = this.game.getState(this.game.statesIndexes.NORMAL);
         this.y+=this.speed;
         if(this.y>this.game.height)
         {
             this.markedForDeletion = true;
         }
-        if(this.distanceFrom(this.game.player)<5)
+        if(this.distanceFrom(state.player)<5)
         {
-            if(this.isColliding(this.game.player)&&!this.game.player.invincible)
+            if(this.isColliding(state.player)&&!state.player.invincible)
             {
-                this.game.player.takeDamage();
+                state.player.takeDamage();
             }
         }
     }

@@ -5,8 +5,9 @@ class UI{
     }
     render(scr)
     {
-        scr.drawString('score: '+this.game.player.score, 0, 0);
-        scr.drawString('lifes: '+this.game.player.lifes, 0, 1);
+        let state = this.game.getState(this.game.statesIndexes.NORMAL);
+        scr.drawString('score: '+state.player.score, 0, 0);
+        scr.drawString('lifes: '+state.player.lifes, 0, 1);
     }
 }
 export default UI;

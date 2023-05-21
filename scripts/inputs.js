@@ -20,7 +20,7 @@ class InputHandler{
         document.addEventListener('touchstart', (e)=>{
             this.touchX = e.changedTouches[0].clientX;
             this.touchY = e.changedTouches[0].clientY;
-            this.clicked = true;
+            this.clicking= true;
         });
         document.addEventListener('touchmove', (e)=>{
             let swipeDistanceX = this.touchX-e.changedTouches[0].clientX;
@@ -44,7 +44,15 @@ class InputHandler{
         });
         document.addEventListener('touchend', (e)=>{
             this.swipes = [];
-            this.clicked = false;
+            this.clicking = false;
+        });
+        document.addEventListener('mousedown', (e)=>{
+            this.touchX = e.clientX;
+            this.touchY = e.clientY;
+            this.clicking = true;
+        });
+        document.addEventListener('mouseup', (e)=>{
+            this.clicking = false;
         });
     }
     isKeyActive(key)

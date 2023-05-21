@@ -9,20 +9,21 @@ class Score extends Entity{
     }
     update()
     {
+        let state = this.game.getState(this.game.statesIndexes.NORMAL);
         this.y+=this.speed;
         if(this.y>this.game.height)
         {
             this.markedForDeletion = true;
         }
-        if(this.distanceFrom(this.game.player)<5)
+        if(this.distanceFrom(state.player)<5)
         {
-            if(this.isColliding(this.game.player))
+            if(this.isColliding(state.player))
             {
                 this.markedForDeletion = true;
-                this.game.player.score++;
-                if(Math.random()<0.3)
+                state.player.score++;
+                if(Math.random()<0.2)
                 {
-                    this.game.player.lifes++;
+                    state.player.lifes++;
                 }
             }
         }
