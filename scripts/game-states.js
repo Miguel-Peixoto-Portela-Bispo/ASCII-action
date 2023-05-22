@@ -44,6 +44,7 @@ export class MenuGameState extends GameState{
         let input = this.game.inputHandler;
         if(input.clicking&&this.canChange)
         {
+            //this 2 conditions makes sure the touch was on the game screen
             if(input.touchX>this.game.canvas.getBoundingClientRect().x&&input.touchX<this.game.canvas.getBoundingClientRect().x+this.game.canvas.getBoundingClientRect().width)
             {
                 if(input.touchY>this.game.canvas.getBoundingClientRect().y&&input.touchY<this.game.canvas.getBoundingClientRect().y+this.game.canvas.getBoundingClientRect().height)
@@ -99,6 +100,7 @@ export class NormalGameState extends GameState{
                 }
             }
         }
+        //deletes all the marked entities
         this.entities = this.entities.filter(e=>!e.markedForDeletion);
         for(let e of this.entities)
         {
@@ -109,7 +111,7 @@ export class NormalGameState extends GameState{
             this.maxTimeToSpawn = Math.random()*this.game.fps*3;
             this.timerToSpawn = 0;
             let x = 0;
-            for(let i = 0;i<Math.floor(Math.random()*3)+1;i++)
+            for(let i = 0;i<Math.floor(Math.random()*5)+1;i++)
             {
                 x = Math.random()*(this.game.width-3);
                 this.entities.push(new Enemy(x, -1, this.game));
@@ -216,6 +218,7 @@ export class OverGameState extends GameState{
         let input = this.game.inputHandler;
         if(input.clicking&&this.canChange)
         {
+            //this 2 conditions makes sure the touch was on the game screen
             if(input.touchX>this.game.canvas.getBoundingClientRect().x&&input.touchX<this.game.canvas.getBoundingClientRect().x+this.game.canvas.getBoundingClientRect().width)
             {
                 if(input.touchY>this.game.canvas.getBoundingClientRect().y&&input.touchY<this.game.canvas.getBoundingClientRect().y+this.game.canvas.getBoundingClientRect().height)

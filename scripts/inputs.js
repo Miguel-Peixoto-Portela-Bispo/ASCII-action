@@ -63,9 +63,5 @@ class InputHandler{
     {
         return this.swipes.indexOf(swipe)!==-1;
     }
-    keyIsPressed()
-    {
-        return this.activeKeys.length>0;
-    }
 }
 export default InputHandler;

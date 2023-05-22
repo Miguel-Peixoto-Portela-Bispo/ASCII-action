@@ -11,10 +11,12 @@ class Score extends Entity{
     {
         let state = this.game.getState(this.game.statesIndexes.NORMAL);
         this.y+=this.speed;
+        //swiping off the lower side of the screen will be erased
         if(this.y>this.game.height)
         {
             this.markedForDeletion = true;
         }
+        //this first condition is important for performance reasons
         if(this.distanceFrom(state.player)<5)
         {
             if(this.isColliding(state.player))

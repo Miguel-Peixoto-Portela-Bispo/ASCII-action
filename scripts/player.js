@@ -20,14 +20,17 @@ class Player extends Entity{
         {
             this.x-=0.5;
         }
+        //makes sure the player can't pass out on the left side of the screen
         if(this.x<0)
         {
             this.x = 0;
         }
+        //makes sure the player can't pass out on the right side or the screen
         if(this.x+3>this.game.width)
         {
             this.x = this.game.width-3;
         }
+        //if the player is invincible he will blink
         if(this.invincible)
         {
             this.invincibleTimer++;
@@ -39,8 +42,10 @@ class Player extends Entity{
             {
                 this.invincibleTimer = 0;
                 this.invincible = false;
+                this.canShow = true;
             }
         }
+        //if the life is equal or less than 0 is game over
         if(this.lifes <= 0)
         {
             this.game.resetState(this.game.statesIndexes.OVER);

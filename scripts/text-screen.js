@@ -10,6 +10,7 @@ class TextScreen{
     {
         this.chars.fill(' ');
     }
+    //shows all the chars
     showIn(canvas)
     {
         let str = '';

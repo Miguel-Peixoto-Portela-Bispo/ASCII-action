@@ -56,6 +56,7 @@ class Game{
         }
         this.states[index] = state;
     }
+    //this method is important for translating the touch position into chars unit
     getTouchPosition()
     {
         let fontSize = window.getComputedStyle(this.canvas).getPropertyValue('font-size');
