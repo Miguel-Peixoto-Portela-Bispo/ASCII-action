@@ -7,23 +7,18 @@
     padding: 0;
 }
 body{
-    display: flex;
-    flex-direction: column;
     background-color: var(--color2);
 }
 #header-container{
     font-family: Arial, Helvetica, sans-serif;
 }
-#main-container{
-    align-self: center;
+#game-screen{
     font-family: 'Courier New', Courier, monospace;
     border: 1px solid var(--color1);
     color: var(--color1);
     font-size: 12px;
-    margin: 1rem;
-}
-#game-screen{
-    font-family: inherit;
+    width: fit-content;
+    margin: 1rem auto;
 }
 #config{
     display: none;

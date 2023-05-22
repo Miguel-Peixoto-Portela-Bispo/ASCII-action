@@ -41,6 +41,17 @@ class Player extends Entity{
                 this.invincible = false;
             }
         }
+        if(this.lifes <= 0)
+        {
+            this.game.resetState(this.game.statesIndexes.OVER);
+            this.game.setState(this.game.statesIndexes.OVER);
+        }
+        let menu = this.game.getState(this.game.statesIndexes.MENU);
+        if(this.score>Number(menu.highScore))
+        {
+            menu.highScore = this.score;
+            localStorage.setItem('high-score', this.score);
+        }
     }
     takeDamage()
     {

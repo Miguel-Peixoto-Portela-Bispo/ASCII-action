@@ -15,7 +15,7 @@ class Game{
         this.inputHandler = new InputHandler();
         this.statesIndexes = {MENU: 0, NORMAL: 1, PAUSE: 2, OVER: 3};
         this.states = [new MenuGameState(this), new NormalGameState(this), new PauseGameState(this), new OverGameState(this)];
-        this.curState = this.states[this.statesIndexes.OVER];
+        this.curState = this.states[this.statesIndexes.MENU];
     }
     update()
     {
@@ -84,14 +84,14 @@ function loop()
 loop();
 
 const fontSize = document.getElementById('font-size');
-const mainContainer = document.getElementById('main-container');
+const gameScreen = document.getElementById('game-screen');
 const color1 = document.getElementById('color1');
 const color2 = document.getElementById('color2');
-const saveBtn = document.getElementById('set-btn');
+const setBtn = document.getElementById('set-btn');
 const configBtn = document.getElementById('config-btn');
 const config = document.getElementById('config');
-saveBtn.onclick = ()=>{
-    mainContainer.style.fontSize = fontSize.value+'px';
+setBtn.onclick = ()=>{
+    gameScreen.style.fontSize = fontSize.value+'px';
     document.documentElement.style.setProperty('--color1', color1.value);
     document.documentElement.style.setProperty('--color2', color2.value)
 }

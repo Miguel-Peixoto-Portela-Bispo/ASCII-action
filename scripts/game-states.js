@@ -18,11 +18,21 @@ export class MenuGameState extends GameState{
         this.showIndex = 0;
         this.canShow = true;
         this.canChange = false;
-        this.title =  '     _    ____   ____ ___ ___ \n'+
+        this.title1 =  '     _    ____   ____ ___ ___ \n'+
         '    / \\  / ___| / ___|_ _|_ _|\n'+
         '   / _ \\ \\___ \\| |    | | | | \n'+
         '  / ___ \\ ___) | |___ | | | | \n'+
         ' /_/   \\_\\____/ \\____|___|___|';
+        this.title2 = '             _   _             \n'+
+                      '   __ _  ___| |_(_) ___  _ __  \n'+
+                      '  / _` |/ __| __| |/ _ \\| \'_ \\ \n'+
+                      ' | (_| | (__| |_| | (_) | | | |\n'+
+                      '  \\__,_|\\___|\\__|_|\\___/|_| |_|\n'
+        this.highScore = 0;
+        if(localStorage.getItem('high-score'))
+        {
+            this.highScore = localStorage.getItem('high-score');
+        }
     }
     update()
     {
@@ -50,15 +60,15 @@ export class MenuGameState extends GameState{
     }
     render(scr)
     {
-        if(this.title)
-        {
-            scr.drawString(this.title, (this.game.width-(this.title.split('\n')[0].length))/2, 2);
-        }
+        scr.drawString(this.title1, (this.game.width-(this.title1.split('\n')[0].length))/2, 2);
+        scr.drawString(this.title2, (this.game.width-(this.title2.split('\n')[0].length))/2, 3+this.title1.split('\n').length);
         if(this.canShow)
         {
             let str = '<click to start>';
-            scr.drawString(str, (this.game.width-str.length)/2, 12);
+            scr.drawString(str, (this.game.width-str.length)/2, 4+this.title1.split('\n').length+this.title2.split('\n').length);
         }
+        let str = 'high-score: '+this.highScore;
+        scr.drawString(str, (this.game.width-str.length)/2, this.game.height-1);
     }
 }
 export class NormalGameState extends GameState{
@@ -145,7 +155,7 @@ export class PauseGameState extends GameState{
                 let str = this.options[i];
                 if(x>=(this.game.width-str.length)/2&&x<=(this.game.width-str.length)/2+str.length)
                 {
-                    if(y>this.game.height/2-1+3+i*4&&y<this.game.height/2-1+3+i*4+3)
+                    if(y>=this.game.height/2-1+3+i*4&&y<this.game.height/2-1+3+i*4+3)
                     {
                         this.doAction(str);
                     }
@@ -229,5 +239,7 @@ export class OverGameState extends GameState{
             let str = '<click to restart>';
             scr.drawString(str, (this.game.width-str.length)/2, 4+this.mainText1.split('\n').length+this.mainText2.split('\n').length)
         }
+        let str = 'final score: '+this.game.getState(this.game.statesIndexes.NORMAL).player.score;
+        scr.drawString(str,  (this.game.width-str.length)/2, this.game.height-1);
     }
 }
