@@ -15,8 +15,6 @@ export class MenuGameState extends GameState{
     constructor(game)
     {
         super(game);
-        this.showIndex = 0;
-        this.canShow = true;
         this.canChange = false;
         this.title1 =  '     _    ____   ____ ___ ___ \n'+
         '    / \\  / ___| / ___|_ _|_ _|\n'+
@@ -28,31 +26,41 @@ export class MenuGameState extends GameState{
                       '  / _` |/ __| __| |/ _ \\| \'_ \\ \n'+
                       ' | (_| | (__| |_| | (_) | | | |\n'+
                       '  \\__,_|\\___|\\__|_|\\___/|_| |_|\n'
-        this.highScore = 0;
-        if(localStorage.getItem('high-score'))
-        {
-            this.highScore = localStorage.getItem('high-score');
-        }
+        this.highScore = 0 || localStorage.getItem('high-score');
+        this.options = ['play', 'tutorial'];
     }
     update()
     {
-        this.showIndex++;
-        if(this.showIndex%this.game.fps/3 === 0)
-        {
-            this.canShow = !this.canShow;
-        }
         let input = this.game.inputHandler;
         if(input.clicking&&this.canChange)
         {
-            //this 2 conditions makes sure the touch was on the game screen
-            if(input.touchX>this.game.canvas.getBoundingClientRect().x&&input.touchX<this.game.canvas.getBoundingClientRect().x+this.game.canvas.getBoundingClientRect().width)
+            if(!this.inTutorial)
             {
-                if(input.touchY>this.game.canvas.getBoundingClientRect().y&&input.touchY<this.game.canvas.getBoundingClientRect().y+this.game.canvas.getBoundingClientRect().height)
+                let x = this.game.getTouchPosition().x;
+                let y = this.game.getTouchPosition().y;
+                for(let i = 0;i<this.options.length;i++)
                 {
-                    this.game.resetState(this.game.statesIndexes.NORMAL);
-                    this.game.setState(this.game.statesIndexes.NORMAL);
+                    let str = this.options[i];
+                    if(x>=(this.game.width-str.length)/2&&x<=(this.game.width-str.length)/2+str.length+1)
+                    {
+                        if(y>=this.game.height/2-1+3+i*4&&y<this.game.height/2-1+3+i*4+3)
+                        {
+                            this.doAction(str);
+                        }
+                    }
                 }
             }
+            else
+            {
+                if(input.touchX>this.game.canvas.getBoundingClientRect().x&&input.touchX<this.game.canvas.getBoundingClientRect().x+this.game.canvas.getBoundingClientRect().width)
+                {
+                    if(input.touchY>this.game.canvas.getBoundingClientRect().y&&input.touchY<this.game.canvas.getBoundingClientRect().y+this.game.canvas.getBoundingClientRect().height)
+                    {
+                        this.inTutorial = false;
+                    }
+                }
+            }
+            this.canChange = false;
         }
         else if(!input.clicking)
         {
@@ -61,15 +69,45 @@ export class MenuGameState extends GameState{
     }
     render(layer)
     {
-        layer.drawString(this.title1, (this.game.width-(this.title1.split('\n')[0].length))/2, 2);
-        layer.drawString(this.title2, (this.game.width-(this.title2.split('\n')[0].length))/2, 3+this.title1.split('\n').length);
-        if(this.canShow)
+        if(!this.inTutorial)
         {
-            let str = '<click to start>';
-            layer.drawString(str, (this.game.width-str.length)/2, 4+this.title1.split('\n').length+this.title2.split('\n').length);
+            layer.drawString(this.title1, (this.game.width-(this.title1.split('\n')[0].length))/2, 2);
+            layer.drawString(this.title2, (this.game.width-(this.title2.split('\n')[0].length))/2, 3+this.title1.split('\n').length);
+            for(let i = 0;i<this.options.length;i++)
+            {
+                let str = this.options[i];
+                layer.fillRect('*', (this.game.width-str.length)/2-1, this.game.height/2-1+3+i*4, str.length+2, 3);
+                layer.drawString(str, (this.game.width-str.length)/2, this.game.height/2+3+i*4);
+            }
+            let str = 'high-score: '+this.highScore;
+            layer.drawString(str, (this.game.width-str.length)/2, this.game.height-1);
         }
-        let str = 'high-score: '+this.highScore;
-        layer.drawString(str, (this.game.width-str.length)/2, this.game.height-1);
+        else
+        {
+            let str = 'goals:'+'\n'+
+                      ' - take all the (+)'+'\n'+
+                      ' - avoid all the <->'+'\n'+
+                      '\n'+
+                      'rules:'+'\n'+
+                      ' - if the timer reaches 0 seconds, then is' + '\n'+
+                      ' game over'+'\n'+
+                      ' - if lifes reaches 0, then is game over';
+            layer.drawString(str, 4, 4);
+            let str2 = '<click to exit>';
+            layer.drawString(str2, this.game.width-str2.length, this.game.height-1);
+        }
+    }
+    doAction(str)
+    {
+        if(str === 'play')
+        {
+            this.game.resetState(this.game.statesIndexes.NORMAL);
+            this.game.setState(this.game.statesIndexes.NORMAL);
+        }
+        else if(str === 'tutorial')
+        {
+            this.inTutorial = true;
+        }
     }
 }
 export class NormalGameState extends GameState{
@@ -152,7 +190,7 @@ export class PauseGameState extends GameState{
             for(let i = 0;i<this.options.length;i++)
             {
                 let str = this.options[i];
-                if(x>=(this.game.width-str.length)/2&&x<=(this.game.width-str.length)/2+str.length)
+                if(x>=(this.game.width-str.length)/2&&x<=(this.game.width-str.length)/2+str.length+1)
                 {
                     if(y>=this.game.height/2-1+3+i*4&&y<this.game.height/2-1+3+i*4+3)
                     {
