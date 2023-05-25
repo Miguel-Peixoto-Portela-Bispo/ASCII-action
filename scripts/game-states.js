@@ -37,7 +37,7 @@ export class MenuGameState extends GameState{
     update()
     {
         this.showIndex++;
-        if(this.showIndex%8 === 0)
+        if(this.showIndex%this.game.fps/3 === 0)
         {
             this.canShow = !this.canShow;
         }
@@ -59,17 +59,17 @@ export class MenuGameState extends GameState{
             this.canChange = true;
         }
     }
-    render(scr)
+    render(layer)
     {
-        scr.drawString(this.title1, (this.game.width-(this.title1.split('\n')[0].length))/2, 2);
-        scr.drawString(this.title2, (this.game.width-(this.title2.split('\n')[0].length))/2, 3+this.title1.split('\n').length);
+        layer.drawString(this.title1, (this.game.width-(this.title1.split('\n')[0].length))/2, 2);
+        layer.drawString(this.title2, (this.game.width-(this.title2.split('\n')[0].length))/2, 3+this.title1.split('\n').length);
         if(this.canShow)
         {
             let str = '<click to start>';
-            scr.drawString(str, (this.game.width-str.length)/2, 4+this.title1.split('\n').length+this.title2.split('\n').length);
+            layer.drawString(str, (this.game.width-str.length)/2, 4+this.title1.split('\n').length+this.title2.split('\n').length);
         }
         let str = 'high-score: '+this.highScore;
-        scr.drawString(str, (this.game.width-str.length)/2, this.game.height-1);
+        layer.drawString(str, (this.game.width-str.length)/2, this.game.height-1);
     }
 }
 export class NormalGameState extends GameState{
@@ -111,32 +111,29 @@ export class NormalGameState extends GameState{
             this.maxTimeToSpawn = Math.random()*this.game.fps*3;
             this.timerToSpawn = 0;
             let x = 0;
-            for(let i = 0;i<Math.floor(Math.random()*5)+1;i++)
+            for(let i = 0;i<Math.floor(Math.random()*10)+1;i++)
             {
                 x = Math.random()*(this.game.width-3);
                 this.entities.push(new Enemy(x, -1, this.game));
             }
-            if(Math.random()<0.5)
-            {
-                x = Math.random()*(this.game.width-3);
-                this.entities.push(new Score(x, -1, this.game));
-            }
+            x = Math.random()*(this.game.width-3);
+            this.entities.push(new Score(x, -1, this.game));
         }
         else
         {
             this.timerToSpawn++;
         }
     }
-    render(scr)
+    render(layer)
     {
         for(let e of this.entities)
         {
-            e.render(scr);
+            e.render(layer);
         }
-        this.ui.render(scr);
+        this.ui.render(layer);
         let str = 'pause';
-        scr.fillRect('*', this.game.width-str.length-2, 0, str.length+2, 3);
-        scr.drawString(str, this.game.width-str.length-1, 1);
+        layer.fillRect('*', this.game.width-str.length-2, 0, str.length+2, 3);
+        layer.drawString(str, this.game.width-str.length-1, 1);
     }
 }
 export class PauseGameState extends GameState{
@@ -165,16 +162,16 @@ export class PauseGameState extends GameState{
             }
         }
     }
-    render(scr)
+    render(layer)
     {
         let str = 'paused'
-        scr.fillRect('.', (this.game.width-str.length)/2-1, this.game.height/2-2, str.length+2, 3);
-        scr.drawString(str, (this.game.width-str.length)/2, this.game.height/2-1);
+        layer.fillRect('.', (this.game.width-str.length)/2-1, this.game.height/2-2, str.length+2, 3);
+        layer.drawString(str, (this.game.width-str.length)/2, this.game.height/2-1);
         for(let i = 0;i<this.options.length;i++)
         {
             let str = this.options[i];
-            scr.fillRect('*', (this.game.width-str.length)/2-1, this.game.height/2-1+3+i*4, str.length+2, 3);
-            scr.drawString(str, (this.game.width-str.length)/2, this.game.height/2+3+i*4);
+            layer.fillRect('*', (this.game.width-str.length)/2-1, this.game.height/2-1+3+i*4, str.length+2, 3);
+            layer.drawString(str, (this.game.width-str.length)/2, this.game.height/2+3+i*4);
         }
     }
     doAction(str)
@@ -211,7 +208,7 @@ export class OverGameState extends GameState{
     update()
     {
         this.showIndex++;
-        if(this.showIndex%8 === 0)
+        if(this.showIndex%this.game.fps/3 === 0)
         {
             this.canShow = !this.canShow;
         }
@@ -233,16 +230,16 @@ export class OverGameState extends GameState{
             this.canChange = true;
         }
     }
-    render(scr)
+    render(layer)
     {
-        scr.drawString(this.mainText1, (this.game.width-this.mainText1.split('\n')[0].length)/2, 2)
-        scr.drawString(this.mainText2, (this.game.width-this.mainText2.split('\n')[0].length)/2, 3+this.mainText1.split('\n').length);
+        layer.drawString(this.mainText1, (this.game.width-this.mainText1.split('\n')[0].length)/2, 2)
+        layer.drawString(this.mainText2, (this.game.width-this.mainText2.split('\n')[0].length)/2, 3+this.mainText1.split('\n').length);
         if(this.canShow)
         {
-            let str = '<click to restart>';
-            scr.drawString(str, (this.game.width-str.length)/2, 4+this.mainText1.split('\n').length+this.mainText2.split('\n').length)
+            let str = '<click to enter main menu>';
+            layer.drawString(str, (this.game.width-str.length)/2, 4+this.mainText1.split('\n').length+this.mainText2.split('\n').length)
         }
         let str = 'final score: '+this.game.getState(this.game.statesIndexes.NORMAL).player.score;
-        scr.drawString(str,  (this.game.width-str.length)/2, this.game.height-1);
+        layer.drawString(str,  (this.game.width-str.length)/2, this.game.height-1);
     }
 }

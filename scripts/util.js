@@ -7,9 +7,9 @@ export class Entity{
         this.text = text;
     }
     update(){}
-    render(scr)
+    render(layer)
     {
-        scr.drawString(this.text, Math.floor(this.x), Math.floor(this.y));
+        layer.drawString(this.text, Math.floor(this.x), Math.floor(this.y));
     }
     isColliding(e)
     {

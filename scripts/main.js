@@ -1,7 +1,6 @@
 import { MenuGameState, NormalGameState, OverGameState, PauseGameState } from "./game-states.js";
 import InputHandler from "./inputs.js";
-import TextScreen from "./text-screen.js";
-const WIDTH = 48, HEIGHT = 24;
+import { Layer, Renderer } from "./renderer.js";
 const textCanvas = document.getElementById('game-screen');
 class Game{
 
@@ -10,8 +9,9 @@ class Game{
         this.width = w;
         this.height = h;
         this.canvas = canvas;
-        this.fps = 24;
-        this.screen = new TextScreen(w, h);
+        this.fps = 30;
+        this.layer = new Layer(0, 0, w, h, 0, true, 'game');
+        this.renderer = new Renderer(w, h, [this.layer]);
         this.inputHandler = new InputHandler();
         this.statesIndexes = {MENU: 0, NORMAL: 1, PAUSE: 2, OVER: 3};
         this.states = [new MenuGameState(this), new NormalGameState(this), new PauseGameState(this), new OverGameState(this)];
@@ -23,9 +23,9 @@ class Game{
     }
     render()
     {
-        this.screen.clear();
-        this.curState.render(this.screen);
-        this.screen.showIn(this.canvas);
+        this.layer.clear();
+        this.curState.render(this.layer);
+        this.renderer.display(this.canvas);
     }
     setState(index)
     {
@@ -75,7 +75,7 @@ class Game{
         return {x: x, y: y};
     }
 }
-const game = new Game(WIDTH, HEIGHT, textCanvas);
+const game = new Game(48, 24, textCanvas);
 function loop()
 {
     game.update();

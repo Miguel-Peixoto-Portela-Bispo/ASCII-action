@@ -9,9 +9,11 @@ class Player extends Entity{
         this.invincibleTimer = 0;
         this.score = 0;
         this.canShow = true;
+        this.timer = game.fps*30;
     }
     update()
     {
+        this.timer--;
         if(this.game.inputHandler.isKeyActive('ArrowRight')||this.game.inputHandler.isSwipeActive('swipe right'))
         {
             this.x+=0.5;
@@ -46,7 +48,7 @@ class Player extends Entity{
             }
         }
         //if the life is equal or less than 0 is game over
-        if(this.lifes <= 0)
+        if(this.lifes <= 0||this.timer<=0)
         {
             this.game.resetState(this.game.statesIndexes.OVER);
             this.game.setState(this.game.statesIndexes.OVER);

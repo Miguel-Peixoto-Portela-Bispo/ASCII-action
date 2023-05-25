@@ -23,6 +23,7 @@ class Score extends Entity{
             {
                 this.markedForDeletion = true;
                 state.player.score++;
+                state.player.timer+=Math.floor(this.game.fps*(Math.random()*5+5));
                 if(Math.random()<0.2)
                 {
                     state.player.lifes++;
