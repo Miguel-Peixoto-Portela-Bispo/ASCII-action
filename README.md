@@ -9,3 +9,5 @@ swipe to the left - moves player to the left
 right arrow - moves player to the right
 
 left arrow - moves player to the left 
+
+[Play here](https://miguel-peixoto-portela-bispo.github.io/ASCII-action/)
